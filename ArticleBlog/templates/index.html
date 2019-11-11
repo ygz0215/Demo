@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block style %}
+    <link rel="stylesheet" href="/static/css/main.css">
+{% endblock %}
+
+{% block content %}
+    <div class="jztop"></div>
+    <div class="container">
+        <div class="bloglist f_l">
+            {% for new in newarticle %}
+                <h3><a href="/articleDetails/{{ new.id }}">{{ new.title }}</a></h3>
+                <figure><img src="/static/{{ new.picture }}" alt="{{ new.title }}"></figure>
+                <ul>
+                    <p> {{ new.description | safe}}</p>
+                    <a title="{{ new.title }}" href="/articleDetails/{{ new.id }}" target="_blank" class="readmore">阅读全文&gt;&gt;</a>
+                </ul>
+                <p class="dateview"><span>{{ new.date }}</span><span>作者：{{ new.author.name }}</span><span>个人博客：[<a href="/jstt/bj/">{{ new.type.first.name }}</a>]</span></p>
+            {% endfor %}
+        </div>
+        <div class="r_box f_r">
+            <div class="tit01">
+                <h3 class="tit">关注我</h3>
+                <div class="gzwm">
+                    <ul>
+                        <li><a class="email" href="#" target="_blank">我的电话</a></li>
+                        <li><a class="qq" href="#mailto:admin@admin.com" target="_blank">我的邮箱</a></li>
+                        <li><a class="tel" href="#" target="_blank">我的QQ</a></li>
+                        <li><a class="prize" href="#">个人奖项</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!--tit01 end-->
+
+            <div class="tuwen">
+                <h3 class="tit">图文推荐</h3>
+                <ul>
+                    {% for recommend in recommendarticle %}
+                    <li><a href="/articleDetails/{{ recommend.id }}"><img src="/static/{{ recommend.picture }}"><b>{{ recommend.title }}</b></a>
+                        <p><span class="tulanmu"><a href="/articleDetails/{{ recommend.id }}">{{ recommend.type.first.name }}</a></span><span class="tutime">{{ recommend.date }}</span></p>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="ph">
+                <h3 class="tit">点击排行</h3>
+                <ul class="rank">
+                    {% for one in clickarticle %}
+                    <li><a href="/articleDetails/{{ one.id }}" title="{{ one.title }}" target="_blank">{{ one.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="ad"> <img src="/static/images/03.jpg"> </div>
+        </div>
+    </div>
+    <!-- container代码 结束 -->
+    <div class="jzend"></div>
+{% endblock %}
+
+
+
+
+

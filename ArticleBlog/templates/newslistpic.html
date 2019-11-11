@@ -1,0 +1,56 @@
+
+
+{% extends 'base.html' %}
+{% block style %}
+    <link rel="stylesheet" href="/static/css/main.css">
+{% endblock %}
+{% block content %}
+    <div class="con_content">
+        <div class="about_box">
+            <h2 class="nh1"><span>您现在的位置是：<a href="/" target="_blank">网站首页</a>>><a href="#" target="_blank">个人日记</a></span><b>个人日记</b></h2>
+            <div class="dtxw box">
+                {% for one in page_obj %}
+                    <li>
+                        <div class="dttext f_l">
+                            <ul>
+                                <h2><a href="/articleDetails/{{ one.id }}">{{ one.title }}</a></h2>
+                                <p>{{ one.description }}</p>
+                                <span>{{ one.date }}</span>
+                            </ul>
+                        </div>
+                        <div class="xwpic f_r"><a href="/"><img src="/static/images/02.jpg"></a></div>
+                    </li>
+                {% endfor %}
+
+
+            </div>
+            <div class="pagelist">
+                {% if page_obj.number > 3 %}
+                    <a href="/newslistpic/1">首页</a>
+                {% endif %}
+                {% if page_obj.has_previous %}
+                    <a href="/newslistpic/{{page_obj.previous_page_number }}">上一页</a>
+                {% endif %}
+                {% for one in page_range %}
+                    {% if one == page_obj.number %}
+                        <a href="/newslistpic/{{ one }}" style="color: deeppink">{{ one }}</a>
+                    {% else %}
+                        <a href="/newslistpic/{{ one }}" >{{ one }}</a>
+                    {% endif %}
+
+                {% endfor %}
+                {% if page_obj.has_next %}
+                    <a href="/newslistpic/{{page_obj.next_page_number }}">下一页</a>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <a href="/newslistpic/{{paginator.num_pages }}">尾页</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="blank"></div>
+{% endblock %}
+
+
+
+
