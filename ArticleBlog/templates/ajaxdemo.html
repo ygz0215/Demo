@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/js/jquery.min.js/"></script>
+</head>
+<body>
+<h3>校验用户名密码</h3>
+<form action="">
+    <input type="text" name="username" id="username">
+    <input type="password" name="password" id="password">
+    <input type="button" value="校验" id="checkvalue">
+</form>
+<p id="content"></p>
+</body>
+<script>
+    $('#checkvalue').click(
+        function () {
+            var username=$('#username').val();
+            var password=$('#password').val();
+            var url='/ajaxreq/?username='+username+'&password='+password;
+             $.ajax({
+                    url:url,
+                    type:'get',
+                    data:'',
+                success:function (data) {
+                        console.log(data["code"]);
+                        console.log(data["msg"]);
+                        $("#content").text(data["msg"]);
+                    },
+                error:function (error) {
+
+                },
+            })
+        }
+    )
+</script>
+</html>

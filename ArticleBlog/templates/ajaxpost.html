@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="/static/js/jquery.min.js"></script>
+</head>
+<body>
+<input type="text" name="username" id="username">
+<input type="password" name="'password" id="password">
+<input type="submit" value="注册" id="register">
+<p id="content"></p>
+</body>
+<script>
+    $('#register').click(
+        function () {
+            var username=$('#username').val();
+            var password=$('#password').val();
+            var url='/ajaxpost/';
+            send_data={
+                'username':username,
+                'password':password,
+                'csrfmiddlewaretoken':  "{{ csrf_token }}"
+            };
+            $.ajax({
+                url:url,
+                type:'post',
+                data:send_data,
+                success:function (data) {
+                    console.log(data);
+                    $("#content").text(data["msg"])
+                },
+                error:function (error) {
+
+                }
+            })
+        }
+    )
+</script>
+</html>

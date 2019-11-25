@@ -1,0 +1,139 @@
+{% extends 'buyer/base.html' %}
+{% block title %}
+商品详情页
+{% endblock %}
+{% block content %}
+	<div class="breadcrumb">
+		<a href="#">全部分类</a>
+		<span>></span>
+		<a href="#">新鲜水果</a>
+		<span>></span>
+		<a href="#">商品详情</a>
+	</div>
+
+	<div class="goods_detail_con clearfix">
+		<div class="goods_detail_pic fl"><img style="height: 100%;width: 100%" src="/static/{{ goods.goods_picture }}"></div>
+
+		<div class="goods_detail_list fr">
+			<h3>{{ goods.goods_name }}</h3>
+			<div class="prize_bar">
+				<span class="show_pirze">¥<em id="price">{{ goods.goods_price }}</em></span>
+				<span class="show_unit">单  位：500g</span>
+			</div>
+			<div class="goods_num clearfix">
+				<div class="num_name fl">数 量：{{ goods.goods_count }}</div>
+				<div class="num_add fl">
+					<input type="text" class="num_show fl" id="num" value="1">
+					<a id="add" href="javascript:;" class="add fr">+</a>
+					<a id="minus" href="javascript:;" class="minus fr">-</a>
+				</div>
+			</div>
+			<div class="total">总价：<em id="total">{{ goods.goods_price }}</em>元</div>
+			<div class="operate_btn">
+				<a href="javascript:;" class="buy_btn" id="buynow">立即购买</a>
+				<a href="javascript:;" class="add_cart" id="add_cart" onclick="add_cart()">加入购物车</a>
+			</div>
+		</div>
+	</div>
+
+    <div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+{#			<div class="new_goods">#}
+{#				<h3>新品推荐</h3>#}
+{#				<ul>#}
+{#					<li>#}
+{#						<a href="#"><img src="images/goods/goods001.jpg"></a>#}
+{#						<h4><a href="#">进口柠檬</a></h4>#}
+{#						<div class="prize">￥3.90</div>#}
+{#					</li>#}
+{#					<li>#}
+{#						<a href="#"><img src="images/goods/goods002.jpg"></a>#}
+{#						<h4><a href="#">玫瑰香葡萄</a></h4>#}
+{#						<div class="prize">￥16.80</div>#}
+{#					</li>#}
+{#				</ul>#}
+{#			</div>#}
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<ul class="detail_tab clearfix">
+				<li class="active">商品介绍</li>
+				<li>评论</li>
+			</ul>
+
+			<div class="tab_content">
+				<dl>
+					<dt>商品详情：</dt>
+					<dd>{{ goods.goods_description }} </dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}
+{% block script %}
+    <script>
+    $('#add').click(function () {
+        var number=parseInt($('#num').val());
+        number=number+1;
+        price=parseFloat($('#price').text());
+        total_mount=(price * number).toFixed(2);
+        $('#num').val(number);
+        $('#total').text(total_mount);
+    });
+
+    $('#minus').click(function () {
+        var number=parseInt($('#num').val());
+        number=number-1;
+        if (number<=1){
+            number=1
+        }
+        price=parseFloat($('#price').text());
+        total_mount=(price * number).toFixed(2);
+         $('#num').val(number);
+        $('#total').text(total_mount);
+    });
+
+    $('#buynow').click(function () {
+        var goods_count= $('#num').val();
+        var goods_id ={{ goods_id }};
+        url='http://127.0.0.1:8000/buyer/place_order/?goods_count='+goods_count+'&goods_id='+goods_id;
+        window.location.href=url;
+    });
+
+
+
+
+        function add_cart(){
+            console.log(111111111);
+            var goods_id = {{ goods.id }};
+            count=$('#num').val();
+            // ajax
+            // 构建请求参数
+            send_data = {
+                "goods_id":goods_id,
+                'count':count,
+                "csrfmiddlewaretoken":"{{ csrf_token }}"
+            };
+            $.ajax({
+                url:"/buyer/add_cart/",
+                type:'post',
+                data:send_data,
+                success:function (data) {
+                    console.log(data);
+                    alert(data.msg)
+                },
+                error:function (error) {
+                    console.log(error)
+                }
+
+            })
+
+        }
+
+
+
+    </script>
+
+{% endblock %}

@@ -1,11 +1,24 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from Article.models import *
 from  django.core.paginator import Paginator
 
+def loginvalid(func):
+    def inner(request,*args,**kwargs):
+        username=request.COOKIES.get('username')
+        username_session=request.session.get('username')
+        print(username_session)
+        if username == username_session:
+            return func(request,*args,**kwargs)
+        else:
+            return HttpResponseRedirect('/login/')
+    return inner
+
+@loginvalid
 def about(request):
     return render(request,'about.html')
 
+@loginvalid
 def index(request):
 
     newarticle=Article.objects.order_by('-date')[:6]
@@ -101,17 +114,15 @@ def requesttext(request):
 
 
 def search(request):
-
     searchkey=request.GET.get('search')
     article=[]
     if searchkey:
         article=Article.objects.filter(title__icontains=searchkey)
-
-    print(article)
     return render(request,'search.html',locals())
 
-
+from Article.form import UserForm
 def register(request):
+    register_form=UserForm()
     if request.method=='POST':
         username=request.POST.get('username')
         password=request.POST.get('password')
@@ -130,11 +141,105 @@ def register(request):
 
     return render(request,'register.html',locals())
 
+def register1(request):
+    if request.method=='POST':
+        name=request.POST.get('username')
+        password=request.POST.get('password')
+        if name and password:
+            if User.objects.filter(name=name).exists():
+                result = '用户已经存在'
+            else:
+                user = User()
+                user.name = name
+                user.password = password
+                user.save()
+                result='注册成功'
+        else:
+            result='用户名密码不能为空'
+
+    return render(request,'register.html',locals())
+
+def ajaxdemo(request):
+
+    return render(request,'ajaxdemo.html')
+
+
+from django.http import JsonResponse
+def ajaxreq(request):
+    username=request.GET.get('username')
+    password=request.GET.get('password')
+    result={'code':10000,'msg':''}
+    if username and password:
+        if User.objects.filter(name=username,password=password).exists():
+            result['msg']='用户存在'
+        else:
+            result['msg']='用户不存在'
+            result['code']=10001
+    else:
+        result['msg']='账号密码不能为空'
+        result['code']='10002'
+    return JsonResponse(result)
+
+
+
 import hashlib
 def setPassword(password):
     md5=hashlib.md5()
     md5.update(password.encode())
     result=md5.hexdigest()
     return result
+
+def ajaxregister(request):
+
+    return render(request,'ajaxpost.html')
+
+def ajaxpost(request):
+
+    # result={'code':10000,'msg':''}
+    # print(request.GET)
+    # username=request.POST.get('username')
+    # password=request.POST.get('password')
+    # if username and password:
+    #     flag=User.objects.filter(name=username).exists()
+    #     if flag:
+    #         result={'code':10002,'msg':'该用户已存在'}
+    #     else:
+    #         User.objects.create(name=username,password=password)
+    # else:
+    #     result={"code": 10001, "msg": "参数为空"}
+    result={'code':10000,'msg':''}
+    username=request.POST.get('username')
+    password=request.POST.get('password')
+    if username and password:
+        if User.objects.filter(name=username).exists():
+            result={'code':10002,'msg':'用户已存在'}
+        else:
+            User.objects.create(name=username,password=password)
+            result={'code':10000,'msg':'用户创建成功'}
+    else:
+        result={'code':10001,'msg':'参数为空'}
+    return JsonResponse(result)
+
+def login(request):
+    if request.method=='POST':
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+        if username and password:
+            user=User.objects.filter(name=username,password=password).exists()
+            if user:
+                response= HttpResponseRedirect('/index')
+                response.set_cookie('username',username)
+                request.session['username']=username
+                return response
+        else:
+            return HttpResponse('用户名密码为空')
+
+    return render(request,'login.html')
+
+def logout(request):
+    response=HttpResponseRedirect('/login')
+    response.delete_cookie('username')
+    del request.session['username']
+    return response
 
 

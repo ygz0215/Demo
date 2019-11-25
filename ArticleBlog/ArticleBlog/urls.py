@@ -32,4 +32,11 @@ urlpatterns = [
     path('requesttext/',views.requesttext),
     path('search/',views.search),
     path('register/',views.register),
+    path('register1/',views.register1),
+    path('ajaxdemo/',views.ajaxdemo),
+    path('ajaxreq/',views.ajaxreq),
+    path('ajaxregister/',views.ajaxregister),
+    path('ajaxpost/',views.ajaxpost),
+    path('login/',views.login),
+    path('logout/',views.logout),
 ]

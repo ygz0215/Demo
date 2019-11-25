@@ -53,3 +53,4 @@ def update(request):
 
 def delete(request):
     return HttpResponse('删除')
+
