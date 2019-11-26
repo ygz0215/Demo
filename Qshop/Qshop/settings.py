@@ -165,6 +165,7 @@ CELERYBEAT_SCHEDULER = "djcelery.schedulers.DatabaseScheduler"  ### celery的处
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION':['127.0.0.1:11211']
     }
 }
 CACHE_MIDDLEWARE_KEY_PREFIX = ''

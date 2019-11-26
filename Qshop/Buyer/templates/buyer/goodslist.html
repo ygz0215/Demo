@@ -2,7 +2,11 @@
 {% block title %}
 商品列表页
 {% endblock %}
+{% load cache %}
+
+
 {% block content %}
+    {% cache 500 abc %}
 	<div class="navbar_con">
 		<div class="navbar clearfix">
 			<div class="subnav_con fl">
@@ -86,6 +90,7 @@
 			</div>
 		</div>
 	</div>
+    {% endcache %}
 {% endblock %}
 
 {% block script %}

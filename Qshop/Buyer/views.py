@@ -22,7 +22,10 @@ def LoginValid(func):
             return HttpResponseRedirect('/buyer/login/')
     return inner
 
+from django.views.decorators.cache import cache_page
+
 # @LoginValid
+cache_page(120)
 def index(request):
     types=[]
     goods_type=GoodsType.objects.all()
