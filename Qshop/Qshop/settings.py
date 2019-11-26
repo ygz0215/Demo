@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'Buyer',
     'Seller',
     'djcelery',
+    'Buyer.templatetags',
 ]
 
 MIDDLEWARE = [
@@ -50,7 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'Qshop.middlewaretest.MiddleWareTest',
+    # 'Qshop.middlewaretest.MiddleWareTest',
 ]
 
 ROOT_URLCONF = 'Qshop.urls'

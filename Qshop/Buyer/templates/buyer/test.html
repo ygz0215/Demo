@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% load myfilter %}
+
+{{ 30 | myadd }}
+
+{{ 12 | mymangadd:13 }}
+
+{% myalladd 1 2 3 4 %}
+
+</body>
+</html>

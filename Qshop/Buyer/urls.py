@@ -20,4 +20,5 @@ urlpatterns = [
     path('place_order_more/',place_order_more),
     path('user_center_order/',user_center_order),
     path('user_center_site/',user_center_site),
+    path('test/',test),
 ]

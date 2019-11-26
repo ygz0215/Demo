@@ -261,4 +261,9 @@ def del_cart(request):
     return HttpResponseRedirect('/buyer/cart')
 
 
+def test(request):
+
+    return render(request,'buyer/test.html')
+
+
 
